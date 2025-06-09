@@ -1,0 +1,29 @@
+{
+  "name": "rocketseat_nodejs_modulo3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsup src --out-dir build",
+    "start": "node build/server.cjs",
+    "dev": "tsx watch src/server.ts"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@eslint/js": "9.28.0",
+    "@types/node": "22.15.30",
+    "@typescript-eslint/eslint-plugin": "8.34.0",
+    "@typescript-eslint/parser": "8.34.0",
+    "eslint": "9.28.0",
+    "fastify": "5.3.3",
+    "globals": "16.2.0",
+    "tsup": "8.5.0",
+    "tsx": "4.19.4",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.34.0",
+    "zod": "3.25.56"
+  },
+  "dependencies": {
+    "dotenv": "16.5.0"
+  }
+}
