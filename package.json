@@ -17,6 +17,7 @@
     "eslint": "9.28.0",
     "fastify": "5.3.3",
     "globals": "16.2.0",
+    "prisma": "6.9.0",
     "tsup": "8.5.0",
     "tsx": "4.19.4",
     "typescript": "5.8.3",
@@ -24,6 +25,7 @@
     "zod": "3.25.56"
   },
   "dependencies": {
+    "@prisma/client": "6.9.0",
     "dotenv": "16.5.0"
   }
 }
