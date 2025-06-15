@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  api-solid-pg:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=apisolid
