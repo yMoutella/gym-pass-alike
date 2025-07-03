@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsup src --out-dir build",
     "start": "node build/server.cjs",
-    "dev": "tsx watch src/server.ts"
+    "dev": "tsx watch src/server.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "type": "module",
   "devDependencies": {
@@ -22,6 +24,8 @@
     "tsx": "4.19.4",
     "typescript": "5.8.3",
     "typescript-eslint": "8.34.0",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "3.2.4",
     "zod": "3.25.56"
   },
   "dependencies": {

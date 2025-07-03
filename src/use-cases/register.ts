@@ -1,6 +1,7 @@
-import { prisma } from '@/lib/prisma'
-import PrismaUserRepository from '@/repositories/prisma-users-repository'
+import { UsersRepository } from '@/repositories/users-repository'
+import { UserDuplicatedException } from './errors/user-duplicated-exception'
 import { hash } from 'bcryptjs'
+import { User } from '@prisma/client'
 
 interface RegisterUseCaseInterface {
   name: string
@@ -8,18 +9,30 @@ interface RegisterUseCaseInterface {
   password: string
 }
 
-export class RegisterUseCase {
-  constructor(private repository: any) {}
+interface RegisterUseCaseResponse {
+  user: User
+}
 
-  async create({ name, email, password }: RegisterUseCaseInterface) {
-    const userWithSameEmail = await this.repository.find({ email })
+export class RegisterUseCase {
+  constructor(private repository: UsersRepository) {}
+
+  async create({
+    name,
+    email,
+    password,
+  }: RegisterUseCaseInterface): Promise<RegisterUseCaseResponse> {
+    const userWithSameEmail = await this.repository.findByEmail(email)
 
     if (userWithSameEmail) {
-      throw new Error('Email already exists!')
+      throw new UserDuplicatedException()
     }
 
     const password_hash = await hash(password, 6)
 
-    return await this.repository.create({ name, email, password_hash })
+    const user = await this.repository.create({ name, email, password_hash })
+
+    return {
+      user,
+    }
   }
 }
