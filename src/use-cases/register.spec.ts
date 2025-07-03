@@ -1,8 +1,8 @@
-import PrismaUserRepository from '@/repositories/prisma/prisma-users-repository'
-import { describe, expect, it, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { RegisterUseCase } from './register'
-import { compare, hash } from 'bcryptjs'
+import { compare } from 'bcryptjs'
 import InMemoryUserRepository from '@/repositories/in-memory/in-memory-repository'
+import { UserDuplicatedException } from './errors/user-duplicated-exception'
 
 describe('Register use case', () => {
   it('should hash a user password upon registration', async () => {
@@ -17,5 +17,39 @@ describe('Register use case', () => {
 
     const isPasswordHashed = await compare('1222323329080', user.password_hash)
     expect(isPasswordHashed).toBe(true)
+  })
+
+  it('should not be able to register twice the same user', async () => {
+    const inMemory = new InMemoryUserRepository()
+    const userUseCase = new RegisterUseCase(inMemory)
+
+    await userUseCase.create({
+      name: 'John doe',
+      email: 'johndoe@johnland.com',
+      password: '1222323329080',
+    })
+
+    expect(async () => {
+      await userUseCase.create({
+        name: 'John doe',
+        email: 'johndoe@johnland.com',
+        password: '1222323329080',
+      })
+    }).rejects.toBeInstanceOf(UserDuplicatedException)
+  })
+
+  it('should be able to register user', async () => {
+    const inMemory = new InMemoryUserRepository()
+    const userUseCase = new RegisterUseCase(inMemory)
+
+    const { user } = await userUseCase.create({
+      name: 'John doe',
+      email: 'johndoe@johnland.com',
+      password: '1222323329080',
+    })
+
+    expect(user.name).equal(expect.any(String))
+    expect(user.id).equal(expect.any(String))
+    expect(user.password_hash).equal(expect.any(String))
   })
 })
