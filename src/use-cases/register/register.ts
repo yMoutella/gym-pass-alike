@@ -1,5 +1,5 @@
 import { UsersRepository } from '@/repositories/users-repository'
-import { UserDuplicatedException } from './errors/user-duplicated-exception'
+import { UserDuplicatedException } from '../errors/user-duplicated-exception'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
 

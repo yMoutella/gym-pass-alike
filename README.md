@@ -4,7 +4,7 @@ GymPass style app.
 
 ## Requisitos funcionais
 
-- [ ] Deve ser possível se cadastrar;
+- [x] Deve ser possível se cadastrar;
 - [ ] Deve ser possível se autenticar;
 - [ ] Deve ser possível obter o perfil de um usuário logado;
 - [ ] Deve ser possível obter o número de check-ins realizados pelo usuário;
@@ -17,17 +17,16 @@ GymPass style app.
 
 ## Regras de negócio
 
-- [ ] O Usuário não deve poder se cadastrar com um e-mail duplicado;
+- [x] O Usuário não deve poder se cadastrar com um e-mail duplicado;
 - [ ] O Usuário não pode fazer 2 check-ins no mesmo dia;
 - [ ] O Usuário não pode fazer check-in se não estiver pert o (100m) da academia;
 - [ ] O checkin só pode ser validado até 20 minutos após criado;
 - [ ] O checkin só pode ser validado por administradores;
 - [ ] A academia só pode ser cadastrada por administradores;
 
-
 ## Requisitos não-funcionais
 
-- [ ] A senha do usuário precisa estar criptografada;
+- [x] A senha do usuário precisa estar criptografada;
 - [ ] Os dados da aplicação precisam estar persistidos em um banco PsotgreSQL;
 - [ ] Todas listas de dados precisam estar paginadas com 20 itens por página;
 - [ ] O usuário deve ser identfiicado por um JWT;

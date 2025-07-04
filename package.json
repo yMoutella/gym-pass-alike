@@ -8,7 +8,8 @@
     "start": "node build/server.cjs",
     "dev": "tsx watch src/server.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "type": "module",
   "devDependencies": {
@@ -16,6 +17,7 @@
     "@types/node": "22.15.30",
     "@typescript-eslint/eslint-plugin": "8.34.0",
     "@typescript-eslint/parser": "8.34.0",
+    "@vitest/coverage-v8": "3.2.4",
     "eslint": "9.28.0",
     "fastify": "5.3.3",
     "globals": "16.2.0",

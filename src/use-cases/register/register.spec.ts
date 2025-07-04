@@ -1,8 +1,8 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcryptjs'
 import InMemoryUserRepository from '@/repositories/in-memory/in-memory-repository'
-import { UserDuplicatedException } from './errors/user-duplicated-exception'
+import { UserDuplicatedException } from '../errors/user-duplicated-exception'
 
 describe('Register use case', () => {
   it('should hash a user password upon registration', async () => {
@@ -29,7 +29,7 @@ describe('Register use case', () => {
       password: '1222323329080',
     })
 
-    expect(async () => {
+    await expect(async () => {
       await userUseCase.create({
         name: 'John doe',
         email: 'johndoe@johnland.com',
@@ -48,8 +48,8 @@ describe('Register use case', () => {
       password: '1222323329080',
     })
 
-    expect(user.name).equal(expect.any(String))
-    expect(user.id).equal(expect.any(String))
-    expect(user.password_hash).equal(expect.any(String))
+    expectTypeOf(user).toHaveProperty('name').toBeString()
+    expectTypeOf(user).toHaveProperty('id').toBeString()
+    expectTypeOf(user).toHaveProperty('password_hash').toBeString()
   })
 })
