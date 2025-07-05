@@ -3,6 +3,7 @@ import z from 'zod'
 import { RegisterUseCase } from '@/use-cases/register/register'
 import PrismaUserRepository from '@/repositories/prisma/prisma-users-repository'
 import { UserDuplicatedException } from '@/use-cases/errors/user-duplicated-exception'
+import makeRegisterUseCase from '@/use-cases/factories/make-register-useCase'
 
 export async function register(req: FastifyRequest, res: FastifyReply) {
   const createClientSchema = z.object({
@@ -14,14 +15,13 @@ export async function register(req: FastifyRequest, res: FastifyReply) {
   const { name, email, password } = createClientSchema.parse(req.body)
 
   try {
-    const repo = new PrismaUserRepository()
-    const regUseCase: RegisterUseCase = new RegisterUseCase(repo)
+    const regUseCase = makeRegisterUseCase()
 
     const createdUser = await regUseCase.create({ name, email, password })
     return res.status(201).send(createdUser)
   } catch (error) {
     if (error instanceof UserDuplicatedException) {
-      res.status(409).send('Duplicated!😓')
+      res.status(409).send({ message: 'Duplicated!😓' })
     }
 
     throw error
