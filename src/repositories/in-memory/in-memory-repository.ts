@@ -17,6 +17,16 @@ export default class InMemoryUserRepository implements UsersRepository {
       resolve(user)
     })
   }
+
+  async findById(id: string): Promise<User | null> {
+    return new Promise<User | null>((resolve) => {
+      const user = this.items.find((user) => user.id === id)
+      if (!user) {
+        resolve(null)
+      }
+      resolve(user!)
+    })
+  }
   async findByEmail(email: string): Promise<User | null> {
     return new Promise<User | null>((resolve) => {
       const user = this.items.find((user) => user.email === email)
