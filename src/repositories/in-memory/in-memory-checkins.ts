@@ -1,6 +1,7 @@
 import { Checkin, Prisma, User } from '@prisma/client'
 import { CheckinRepository } from '../checkin-repository'
 import { randomUUID } from 'crypto'
+import dayjs from 'dayjs'
 
 export default class InMemoryCheckinRepository implements CheckinRepository {
   private items: Checkin[] = []
@@ -28,6 +29,20 @@ export default class InMemoryCheckinRepository implements CheckinRepository {
     throw new Error('Method not implemented.')
   }
   findByUserIdOnDate(userId: string, date: Date): Promise<Checkin | null> {
-    throw new Error('Method not implemented.')
+    const startOfDay = dayjs(date).startOf('date')
+    const endOfDay = dayjs(date).endOf('date')
+
+    const findUserOnDate = this.items.find((checkin) => {
+      const checkInDate = dayjs(checkin.created_at)
+      const isOnSameDate = checkInDate.isAfter(startOfDay) && checkInDate.isBefore(endOfDay)
+      
+      return checkin.user_id === userId
+    })
+
+    if (!findUserOnDate) {
+      return Promise.resolve(null)
+    }
+
+    return Promise.resolve(findUserOnDate)
   }
 }

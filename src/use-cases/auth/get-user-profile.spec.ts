@@ -41,7 +41,7 @@ describe('Get user profile feature', () => {
       password_hash: '123456',
     })
 
-    expect(async () => {
+    await expect(async () => {
       await sut.execute({
         userId: '12830921',
       })
