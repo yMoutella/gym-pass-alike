@@ -38,16 +38,15 @@ describe('User Check-in Use Case', () => {
       gymId: 'gym-01',
     })
 
-    await expect(
-      async () =>
-        await sut.create({
-          userId: 'user-01',
-          gymId: 'gym-01',
-        }),
-    ).rejects.toBeInstanceOf(Error)
+    await expect(async () => {
+      await sut.create({
+        userId: 'user-01',
+        gymId: 'gym-01',
+      })
+    }).rejects.toBeInstanceOf(Error)
   })
 
-  it('should not be able to check-in in different days', async () => {
+  it('should be able to check-in in different days', async () => {
     vi.setSystemTime(new Date(2025, 6, 7, 0, 0, 0))
 
     await sut.create({
