@@ -12,7 +12,6 @@ interface RegisterUseCaseInterface {
 interface RegisterUseCaseResponse {
   user: User
 }
-
 export class RegisterUseCase {
   constructor(private repository: UsersRepository) {}
 

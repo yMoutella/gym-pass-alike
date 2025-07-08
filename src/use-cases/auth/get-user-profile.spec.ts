@@ -13,9 +13,6 @@ describe('Get user profile feature', () => {
   })
 
   it('should be able to get user profile', async () => {
-    const usersRepository = new InMemoryUserRepository()
-    const sut = new GetProfileUseCase(usersRepository)
-
     const user = await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
@@ -32,10 +29,7 @@ describe('Get user profile feature', () => {
   })
 
   it('should not able to get user profile', async () => {
-    const usersRepository = new InMemoryUserRepository()
-    const sut = new GetProfileUseCase(usersRepository)
-
-    const user = await usersRepository.create({
+    await usersRepository.create({
       name: 'John Doe',
       email: 'john.doe@example.com',
       password_hash: '123456',

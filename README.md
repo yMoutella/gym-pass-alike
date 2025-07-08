@@ -18,7 +18,7 @@ GymPass style app.
 ## Regras de negócio
 
 - [x] O Usuário não deve poder se cadastrar com um e-mail duplicado;
-- [ ] O Usuário não pode fazer 2 check-ins no mesmo dia;
+- [x] O Usuário não pode fazer 2 check-ins no mesmo dia;
 - [ ] O Usuário não pode fazer check-in se não estiver pert o (100m) da academia;
 - [ ] O checkin só pode ser validado até 20 minutos após criado;
 - [ ] O checkin só pode ser validado por administradores;

@@ -36,6 +36,7 @@
     "bcryptjs": "3.0.2",
     "dayjs": "1.11.13",
     "dotenv": "16.5.0",
+    "geolib": "3.3.4",
     "prettier": "3.6.2"
   }
 }
