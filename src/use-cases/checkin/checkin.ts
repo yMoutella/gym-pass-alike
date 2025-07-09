@@ -4,6 +4,8 @@ import { GymRepository } from '@/repositories/gym-repository'
 import { ResourceNotFoundException } from '../errors/resource-not-found'
 import { getDistance } from 'geolib'
 import GymToDistantException from '../errors/gym-to-distant-exception'
+import dayjs from 'dayjs'
+import CheckinTimeException from '../errors/checkin-time-exception'
 
 interface CheckinUseCaseRequest {
   userId: string
@@ -27,6 +29,16 @@ export class CheckinUseCase {
 
     if (!checkIn) {
       throw new ResourceNotFoundException()
+    }
+
+    const actualMinute = dayjs(new Date()).minute()
+    const createdAtMinute = dayjs(checkIn.created_at).minute()
+    const isPassedTwentyMinutes =
+      dayjs(new Date()).isAfter(checkIn.created_at) &&
+      actualMinute - createdAtMinute > 20
+
+    if (isPassedTwentyMinutes) {
+      throw new CheckinTimeException()
     }
 
     checkIn.validated_at = new Date()

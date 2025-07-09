@@ -6,6 +6,7 @@ import { Decimal } from '@prisma/client/runtime/library'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import GymToDistantException from '../errors/gym-to-distant-exception'
 import { ResourceNotFoundException } from '../errors/resource-not-found'
+import CheckinTimeException from '../errors/checkin-time-exception'
 
 let sut: CheckinUseCase
 let checkinRepository: InMemoryCheckinRepository
@@ -152,5 +153,38 @@ describe('User Check-in Use Case', () => {
     await expect(
       async () => await sut.validate('ckId-2'),
     ).rejects.toBeInstanceOf(ResourceNotFoundException)
+  })
+
+  it('should not be able to validate checkin after 20 minutes', async () => {
+    vi.setSystemTime(new Date(2025, 6, 7, 0, 10, 0))
+
+    const fakeCheckin = await checkinRepository.create({
+      gym_id: 'Rats',
+      user_id: 'user-1',
+      id: 'ck-1',
+      created_at: new Date(),
+    })
+
+    vi.setSystemTime(new Date(2025, 6, 7, 0, 45, 0))
+
+    await expect(
+      async () => await sut.validate(fakeCheckin.id),
+    ).rejects.toBeInstanceOf(CheckinTimeException)
+  })
+
+  it('should  be able to validate checkin between 20 minutes', async () => {
+    vi.setSystemTime(new Date(2025, 6, 7, 0, 10, 0))
+
+    const fakeCheckin = await checkinRepository.create({
+      gym_id: 'Rats',
+      user_id: 'user-1',
+      id: 'ck-1',
+      created_at: new Date(),
+    })
+
+    vi.setSystemTime(new Date(2025, 6, 7, 0, 15, 0))
+    const { checkIn: validated } = await sut.validate(fakeCheckin.id)
+
+    expect(validated.validated_at).toEqual(expect.any(Date))
   })
 })
