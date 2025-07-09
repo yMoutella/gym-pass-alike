@@ -22,6 +22,22 @@ export class CheckinUseCase {
     private gymRepository: GymRepository,
   ) {}
 
+  async validate(checkInId: string) {
+    const checkIn = await this.checkinRepository.findById(checkInId)
+
+    if (!checkIn) {
+      throw new ResourceNotFoundException()
+    }
+
+    checkIn.validated_at = new Date()
+
+    await this.checkinRepository.save(checkIn)
+
+    return {
+      checkIn,
+    }
+  }
+
   async create({
     userId,
     gymId,

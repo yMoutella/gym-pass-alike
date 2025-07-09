@@ -5,6 +5,7 @@ import { Decimal } from '@prisma/client/runtime/library'
 // import { PrismaCheckinsRepository } from '@/repositories/prisma/prisma-checkins-repository'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import GymToDistantException from '../errors/gym-to-distant-exception'
+import { ResourceNotFoundException } from '../errors/resource-not-found'
 
 let sut: CheckinUseCase
 let checkinRepository: InMemoryCheckinRepository
@@ -122,5 +123,34 @@ describe('User Check-in Use Case', () => {
           userLongitude: -100.5703048,
         }),
     ).rejects.toBeInstanceOf(GymToDistantException)
+  })
+
+  it('should be able to validate a checkin', async () => {
+    await gymRepository.create({
+      id: 'gym-2',
+      latitude: new Decimal(-22.8781892),
+      longitude: new Decimal(-43.5703048),
+      title: 'Rats academy',
+      description: 'Description of the gym',
+    })
+
+    const { checkIn } = await sut.create({
+      userId: 'user-01',
+      gymId: 'gym-2',
+      userLatitude: -22.8781892,
+      userLongitude: -43.5703048,
+    })
+
+    const { checkIn: validated } = await sut.validate(checkIn.id)
+
+    console.log(validated)
+
+    expect(validated.validated_at).toEqual(expect.any(Date))
+  })
+
+  it('should not be able to validate a checkin', async () => {
+    await expect(
+      async () => await sut.validate('ckId-2'),
+    ).rejects.toBeInstanceOf(ResourceNotFoundException)
   })
 })

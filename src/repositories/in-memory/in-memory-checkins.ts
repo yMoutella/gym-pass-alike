@@ -6,6 +6,26 @@ import dayjs from 'dayjs'
 export default class InMemoryCheckinRepository implements CheckinRepository {
   private items: Checkin[] = []
 
+  create(data: Prisma.CheckinUncheckedCreateInput): Promise<Checkin> {
+    const checkIn: Checkin = {
+      id: randomUUID(),
+      user_id: data.user_id,
+      gym_id: data.gym_id,
+      created_at: new Date(),
+      validated_at: data.validated_at ? new Date() : null,
+    }
+
+    this.items.push(checkIn)
+
+    return Promise.resolve(checkIn)
+  }
+
+  save(checkin: Checkin): Promise<Checkin> {
+    const index = this.items.findIndex((item) => item.id === checkin.id)
+    this.items[index] = checkin
+    return Promise.resolve(checkin)
+  }
+
   countByUserId(userId: string): Promise<number> {
     const filtered = this.items.filter((checkin) => checkin.user_id === userId)
     return Promise.resolve(filtered.length)
@@ -19,18 +39,10 @@ export default class InMemoryCheckinRepository implements CheckinRepository {
     )
   }
 
-  create(data: Prisma.CheckinUncheckedCreateInput): Promise<Checkin> {
-    const checkIn: Checkin = {
-      id: randomUUID(),
-      user_id: data.user_id,
-      gym_id: data.gym_id,
-      created_at: new Date(),
-      validated_at: data.validated_at ? new Date() : null,
-    }
-
-    this.items.push(checkIn)
-
-    return Promise.resolve(checkIn)
+  findById(checkInId: string): Promise<Checkin | null> {
+    return Promise.resolve(
+      this.items.find((checkin) => checkin.id === checkInId) ?? null,
+    )
   }
 
   findByUserIdOnDate(userId: string, date: Date): Promise<Checkin | null> {

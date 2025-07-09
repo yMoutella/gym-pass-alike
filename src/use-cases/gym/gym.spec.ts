@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { GymUseCase } from './gym'
 import InMemoryGymRepository from '@/repositories/in-memory/in-memory-gym-repository'
 import { ResourceNotFoundException } from '../errors/resource-not-found'
-import InMemoryUserRepository from '@/repositories/in-memory/in-memory-repository'
 
 let inMemory: InMemoryGymRepository
 let sut: GymUseCase
