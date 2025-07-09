@@ -1,4 +1,7 @@
-import { GymRepository } from '@/repositories/gym-repository'
+import {
+  FindManyNearUserParams,
+  GymRepository,
+} from '@/repositories/gym-repository'
 import { Gym } from '@prisma/client'
 import { ResourceNotFoundException } from '../errors/resource-not-found'
 
@@ -8,9 +11,11 @@ interface GymRequestInterface {
   phone: string | null
   latitude: number
   longitude: number
+  page?: number
 }
 interface GymResponseInterface {
-  gym: Gym
+  gym?: Gym
+  gyms?: Gym[]
 }
 
 export class GymUseCase {
@@ -30,6 +35,16 @@ export class GymUseCase {
     }
   }
 
+  async findManyNearUser(
+    params: FindManyNearUserParams,
+    page: number,
+  ): Promise<GymResponseInterface> {
+    const gyms = await this.gymRepository.findManyNearUser(params, page)
+    return {
+      gyms,
+    }
+  }
+
   async findGym(gymId: string): Promise<GymResponseInterface> {
     const gym = await this.gymRepository.findById(gymId)
 
@@ -39,6 +54,21 @@ export class GymUseCase {
 
     return {
       gym,
+    }
+  }
+
+  async findGymByName(
+    gymTitle: string,
+    page: number,
+  ): Promise<GymResponseInterface> {
+    const gyms = await this.gymRepository.findByName(gymTitle, page)
+
+    if (!gyms) {
+      throw new ResourceNotFoundException()
+    }
+
+    return {
+      gyms,
     }
   }
 }

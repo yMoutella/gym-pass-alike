@@ -1,6 +1,7 @@
 import { Gym, Prisma } from '@prisma/client'
-import { GymRepository } from '../gym-repository'
+import { FindManyNearUserParams, GymRepository } from '../gym-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { getDistance } from 'geolib'
 
 export default class InMemoryGymRepository implements GymRepository {
   items: Gym[] = []
@@ -28,5 +29,37 @@ export default class InMemoryGymRepository implements GymRepository {
     }
 
     return Promise.resolve(gym)
+  }
+
+  findManyNearUser(
+    params: FindManyNearUserParams,
+    page: number,
+  ): Promise<Gym[]> {
+    return Promise.resolve(
+      this.items
+        .filter((gym) => {
+          const distance = getDistance(
+            {
+              latitude: params.latitude,
+              longitude: params.longitude,
+            },
+            {
+              latitude: gym.latitude.toNumber(),
+              longitude: gym.longitude.toNumber(),
+            },
+          )
+
+          return distance <= 5000
+        })
+        .slice((page - 1) * 20, page * 20),
+    )
+  }
+
+  findByName(gymTitle: string, page: number): Promise<Gym[] | null> {
+    return Promise.resolve(
+      this.items
+        .filter((gym) => gym.title.includes(gymTitle))
+        .slice((page - 1) * 20, page * 20),
+    )
   }
 }
