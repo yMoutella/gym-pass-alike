@@ -6,6 +6,14 @@ import dayjs from 'dayjs'
 export default class InMemoryCheckinRepository implements CheckinRepository {
   private items: Checkin[] = []
 
+  findManyByUserId(userId: string, page: number): Promise<Checkin[]> {
+    return Promise.resolve(
+      this.items
+        .filter((checkin) => checkin.user_id === userId)
+        .slice((page - 1) * 20, page * 20),
+    )
+  }
+
   create(data: Prisma.CheckinUncheckedCreateInput): Promise<Checkin> {
     const checkIn: Checkin = {
       id: randomUUID(),

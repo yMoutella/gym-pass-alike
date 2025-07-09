@@ -6,7 +6,7 @@ export default class InMemoryUserRepository implements UsersRepository {
   private items: User[] = []
 
   async create(data: Prisma.UserCreateInput): Promise<User> {
-    return new Promise<User>((resolve, reject) => {
+    return new Promise<User>((resolve, _) => {
       const user = {
         name: data.name,
         id: randomUUID(),
