@@ -3,6 +3,12 @@ import { prisma } from '@/lib/prisma'
 import { CheckinRepository } from '../checkin-repository'
 
 export class PrismaCheckinsRepository implements CheckinRepository {
+  async save(checkin: Checkin): Promise<Checkin> {
+    return await prisma.checkin.update({
+      where: { id: checkin.id },
+      data: checkin,
+    })
+  }
   async create(data: Prisma.CheckinUncheckedCreateInput): Promise<Checkin> {
     return await prisma.checkin.create({
       data,
@@ -31,7 +37,7 @@ export class PrismaCheckinsRepository implements CheckinRepository {
 
   async findByUserIdOnDate(
     userId: string,
-    date: Date
+    date: Date,
   ): Promise<Checkin | null> {
     return await prisma.checkin.findFirst({
       where: {
