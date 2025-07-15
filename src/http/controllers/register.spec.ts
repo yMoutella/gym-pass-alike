@@ -28,14 +28,4 @@ describe('Register (e2e) controller', () => {
       }),
     })
   })
-
-  // it('should not register a user with an existing email', async () => {
-  //   // This test will be implemented later
-  //   expect(true).toBe(true)
-  // })
-
-  // it('should validate user input during registration', async () => {
-  //   // This test will be implemented later
-  //   expect(true).toBe(true)
-  // })
 })
