@@ -7,8 +7,10 @@
     "build": "tsup src --out-dir build",
     "start": "node build/server.cjs",
     "dev": "tsx watch src/server.ts",
-    "test": "vitest run",
+    "test": "vitest run --project unit",
     "test:watch": "vitest",
+    "test:e2e": "vitest run --project e2e",
+    "test:e2e:watch": "vitest --project e2e",
     "test:coverage": "vitest --coverage"
   },
   "type": "module",
@@ -34,10 +36,12 @@
     "@fastify/jwt": "9.1.0",
     "@prisma/client": "6.9.0",
     "@types/bcryptjs": "3.0.0",
+    "@types/supertest": "6.0.3",
     "bcryptjs": "3.0.2",
     "dayjs": "1.11.13",
     "dotenv": "16.5.0",
     "geolib": "3.3.4",
-    "prettier": "3.6.2"
+    "prettier": "3.6.2",
+    "supertest": "7.1.3"
   }
 }
