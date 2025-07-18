@@ -20,7 +20,9 @@ export default async function validate(req: FastifyRequest, res: FastifyReply) {
       return res.status(404).send({ message: 'Check-in not found!❌' })
     }
     if (error instanceof CheckinTimeException) {
-      return res.status(404).send({ message: 'You exceed the check-in time!❌' })
+      return res
+        .status(404)
+        .send({ message: 'You exceed the check-in time!❌' })
     }
   }
 }
