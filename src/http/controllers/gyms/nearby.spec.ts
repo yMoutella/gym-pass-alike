@@ -3,18 +3,18 @@ import request from 'supertest'
 import { app } from '@/app'
 import createAuthenticatedUser from '@/lib/utils/test/create-authenticated-user'
 
-describe('Search gyms (E2E)', () => {
+describe('Search nearby gym (E2E)', () => {
   beforeAll(async () => {
     await app.ready()
   })
   afterAll(async () => {
     await app.close()
   })
-  it('should return a list of gyms matching the search criteria', async () => {
+  it('Should return a nearjy gym', async () => {
     const { token } = await createAuthenticatedUser()
 
-    await request(app.server)
-      .post('/gyms')
+    const createdGym = await request(app.server)
+      .post(`/gyms`)
       .send({
         title: 'Rat Gym',
         description: 'A gym for rats',
@@ -25,9 +25,10 @@ describe('Search gyms (E2E)', () => {
       .set('Authorization', `Bearer ${token}`)
 
     const response = await request(app.server)
-      .get('/gyms/search')
+      .get('/gyms/nearby')
       .query({
-        q: 'Rat',
+        latitude: createdGym.body.gym.latitude,
+        longitude: createdGym.body.gym.longitude,
         page: 1,
       })
       .set('Authorization', `Bearer ${token}`)

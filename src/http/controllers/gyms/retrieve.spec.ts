@@ -3,18 +3,18 @@ import request from 'supertest'
 import { app } from '@/app'
 import createAuthenticatedUser from '@/lib/utils/test/create-authenticated-user'
 
-describe('Search gyms (E2E)', () => {
+describe('Retrieve gym (E2E)', () => {
   beforeAll(async () => {
     await app.ready()
   })
   afterAll(async () => {
     await app.close()
   })
-  it('should return a list of gyms matching the search criteria', async () => {
+  it('Should return a gym', async () => {
     const { token } = await createAuthenticatedUser()
 
-    await request(app.server)
-      .post('/gyms')
+    const createdGym = await request(app.server)
+      .post(`/gyms`)
       .send({
         title: 'Rat Gym',
         description: 'A gym for rats',
@@ -25,11 +25,7 @@ describe('Search gyms (E2E)', () => {
       .set('Authorization', `Bearer ${token}`)
 
     const response = await request(app.server)
-      .get('/gyms/search')
-      .query({
-        q: 'Rat',
-        page: 1,
-      })
+      .get(`/gyms/${createdGym.body.gym.id}`)
       .set('Authorization', `Bearer ${token}`)
 
     const { body, status } = response
@@ -37,16 +33,14 @@ describe('Search gyms (E2E)', () => {
     expect(status).toBe(200)
     expect(body).toEqual(
       expect.objectContaining({
-        gyms: expect.arrayContaining([
-          expect.objectContaining({
-            title: 'Rat Gym',
-            id: expect.any(String),
-            description: expect.any(String),
-            latitude: expect.any(String),
-            longitude: expect.any(String),
-            phone: expect.any(String),
-          }),
-        ]),
+        gym: expect.objectContaining({
+          title: 'Rat Gym',
+          id: expect.any(String),
+          description: expect.any(String),
+          latitude: expect.any(String),
+          longitude: expect.any(String),
+          phone: expect.any(String),
+        }),
       }),
     )
   })
