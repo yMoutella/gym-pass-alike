@@ -144,7 +144,6 @@ describe('User Check-in Use Case', () => {
 
     const { checkIn: validated } = await sut.validate(checkIn.id)
 
-
     expect(validated.validated_at).toEqual(expect.any(Date))
   })
 

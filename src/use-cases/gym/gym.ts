@@ -35,6 +35,7 @@ export class GymUseCase {
     }
   }
 
+  //params = {latitude, longitude}
   async findManyNearUser(
     params: FindManyNearUserParams,
     page: number,

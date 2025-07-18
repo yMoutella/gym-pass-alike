@@ -81,7 +81,7 @@ export class CheckinUseCase {
     )
 
     if (checkinOnSameDate) {
-      throw new Error()
+      throw new CheckinTimeException()
     }
 
     const checkIn = await this.checkinRepository.create({
