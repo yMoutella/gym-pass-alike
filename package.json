@@ -33,6 +33,7 @@
     "zod": "3.25.56"
   },
   "dependencies": {
+    "@fastify/cookie": "11.0.2",
     "@fastify/jwt": "9.1.0",
     "@prisma/client": "6.9.0",
     "@types/bcryptjs": "3.0.0",

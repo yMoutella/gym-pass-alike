@@ -240,6 +240,14 @@
     ajv-formats "^3.0.1"
     fast-uri "^3.0.0"
 
+"@fastify/cookie@11.0.2":
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/@fastify/cookie/-/cookie-11.0.2.tgz#fa772c652e51f9252addd788289aa16627ebe5f1"
+  integrity sha512-GWdwdGlgJxyvNv+QcKiGNevSspMQXncjMZ1J8IvuDQk0jvkzgWWZFNC2En3s+nHndZBGV8IbLwOI/sxCZw/mzA==
+  dependencies:
+    cookie "^1.0.0"
+    fastify-plugin "^5.0.0"
+
 "@fastify/error@^4.0.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@fastify/error/-/error-4.2.0.tgz#d40f46ba75f541fdcc4dc276b7308bbc8e8e6d7a"
@@ -1186,7 +1194,7 @@ consola@^3.4.0:
   resolved "https://registry.yarnpkg.com/consola/-/consola-3.4.2.tgz#5af110145397bb67afdab77013fdc34cae590ea7"
   integrity sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==
 
-cookie@^1.0.1:
+cookie@^1.0.0, cookie@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-1.0.2.tgz#27360701532116bd3f1f9416929d176afe1e4610"
   integrity sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==

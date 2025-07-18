@@ -22,9 +22,25 @@ export async function session(req: FastifyRequest, res: FastifyReply) {
       },
     )
 
-    return res.status(200).send({
-      token,
-    })
+    const refreshToken = await res.jwtSign(
+      {},
+      {
+        sub: user.id,
+        expiresIn: '7d',
+      },
+    )
+
+    return res
+      .status(200)
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+      })
+      .send({
+        token,
+      })
   } catch (error) {
     if (error instanceof InvalidCredentialsException) {
       res.status(400).send({ message: 'Credentials not found!😓' })
