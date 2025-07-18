@@ -3,10 +3,19 @@ import request from 'supertest'
 
 interface CreateAuthenticatedUserResponse {
   token: string
+  user: {
+    id: string
+    name: string
+    email: string
+    password_hash: string
+    created_at: string
+  }
 }
 
 export default async function createAuthenticatedUser(): Promise<CreateAuthenticatedUserResponse> {
-  await request(app.server).post('/users').send({
+  const {
+    body: { user },
+  } = await request(app.server).post('/users').send({
     name: 'Yure Moutella',
     email: 'ymoutella@gmail.com',
     password: 'ymoutella',
@@ -20,5 +29,6 @@ export default async function createAuthenticatedUser(): Promise<CreateAuthentic
 
   return {
     token,
+    user,
   }
 }

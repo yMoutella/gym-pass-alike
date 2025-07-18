@@ -24,6 +24,17 @@ describe('Search gyms (E2E)', () => {
       })
       .set('Authorization', `Bearer ${token}`)
 
+    await request(app.server)
+      .post('/gyms')
+      .send({
+        title: 'Rat Gym V2',
+        description: 'A gym for rats',
+        latitude: 78.98999999999999,
+        longitude: -101.33,
+        phone: '123456789',
+      })
+      .set('Authorization', `Bearer ${token}`)
+
     const response = await request(app.server)
       .get('/gyms/search')
       .query({

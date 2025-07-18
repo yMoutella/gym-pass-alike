@@ -10,7 +10,7 @@ describe('Search nearby gym (E2E)', () => {
   afterAll(async () => {
     await app.close()
   })
-  it('Should return a nearjy gym', async () => {
+  it('Should return a nearby gym', async () => {
     const { token } = await createAuthenticatedUser()
 
     const createdGym = await request(app.server)
