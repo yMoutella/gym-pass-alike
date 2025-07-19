@@ -12,14 +12,20 @@ interface CreateAuthenticatedUserResponse {
   }
 }
 
-export default async function createAuthenticatedUser(): Promise<CreateAuthenticatedUserResponse> {
+export default async function createAuthenticatedUser(
+  isAdmin = false,
+): Promise<CreateAuthenticatedUserResponse> {
   const {
     body: { user },
-  } = await request(app.server).post('/users').send({
-    name: 'Yure Moutella',
-    email: 'ymoutella@gmail.com',
-    password: 'ymoutella',
-  })
+  } = await request(app.server)
+    .post('/users')
+    .send({
+      name: 'Yure Moutella',
+      email: 'ymoutella@gmail.com',
+      password: 'ymoutella',
+      role: isAdmin ? 'ADMIN' : 'MEMBER',
+    })
+
   const {
     body: { token },
   } = await request(app.server).post('/sessions').send({

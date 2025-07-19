@@ -1,6 +1,8 @@
 import { app } from '@/app'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
+import { create } from 'domain'
+import createAuthenticatedUser from '@/lib/utils/test/create-authenticated-user'
 
 describe('Session (E2E) controller', () => {
   beforeAll(async () => {
@@ -11,15 +13,10 @@ describe('Session (E2E) controller', () => {
   })
 
   it('should be able to authenticate a user', async () => {
-    await request(app.server).post('/users').send({
-      name: 'John doe',
-      email: 'john@example.com',
-      password: '12345232890',
-    })
-
+    const authUser = await createAuthenticatedUser(true)
     const response = await request(app.server).post('/sessions').send({
-      email: 'john@example.com',
-      password: '12345232890',
+      email: authUser.user.email,
+      password: 'ymoutella',
     })
 
     const { body, status } = response

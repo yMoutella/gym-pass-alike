@@ -8,5 +8,5 @@ export default function checkinRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT)
   //verified
   app.post('/checkins', create)
-  app.get('/checkins/:id', { onRequest: [verifyUserRole('MEMBER')] }, validate)
+  app.get('/checkins/:id', { onRequest: [verifyUserRole('ADMIN')] }, validate)
 }

@@ -7,6 +7,7 @@ interface RegisterUseCaseInterface {
   name: string
   email: string
   password: string
+  role: 'ADMIN' | 'MEMBER'
 }
 
 interface RegisterUseCaseResponse {
@@ -19,6 +20,7 @@ export class RegisterUseCase {
     name,
     email,
     password,
+    role,
   }: RegisterUseCaseInterface): Promise<RegisterUseCaseResponse> {
     const userWithSameEmail = await this.repository.findByEmail(email)
 
@@ -28,7 +30,12 @@ export class RegisterUseCase {
 
     const password_hash = await hash(password, 6)
 
-    const user = await this.repository.create({ name, email, password_hash })
+    const user = await this.repository.create({
+      name,
+      email,
+      password_hash,
+      role,
+    })
 
     return {
       user,

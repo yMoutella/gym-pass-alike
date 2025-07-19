@@ -3,7 +3,8 @@ import request from 'supertest'
 import createAuthenticatedUser from './create-authenticated-user'
 
 export default async function createGymReponse() {
-  const { token } = await createAuthenticatedUser()
+  const { token } = await createAuthenticatedUser(true)
+  console.log(token)
 
   const res = await request(app.server)
     .post('/gyms')

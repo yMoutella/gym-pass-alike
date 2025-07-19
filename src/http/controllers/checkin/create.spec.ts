@@ -13,8 +13,19 @@ describe('Create Check-in (E2E)', () => {
     await app.close()
   })
   it('should create a check-in', async () => {
-    const { token, user } = await createAuthenticatedUser()
-    const { gym } = await createGymReponse()
+    const { token, user } = await createAuthenticatedUser(true)
+    const {
+      body: { gym },
+    } = await request(app.server)
+      .post(`/gyms`)
+      .send({
+        title: 'Rat Gym',
+        description: 'A gym for rats',
+        latitude: 77.98999999999999,
+        longitude: -100.33,
+        phone: '123456789',
+      })
+      .set('Authorization', `Bearer ${token}`)
 
     const response = await request(app.server)
       .post('/checkins')

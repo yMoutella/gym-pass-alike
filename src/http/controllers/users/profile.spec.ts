@@ -19,6 +19,7 @@ describe('Profile (e2e) controller', () => {
       name: 'John doe',
       email: 'johndoe@example.com',
       password: '1skldjaslkd2345232890',
+      role: 'MEMBER',
     })
 
     const { body: session } = await request(app.server).post('/sessions').send({
@@ -40,6 +41,7 @@ describe('Profile (e2e) controller', () => {
       name: expect.any(String),
       email: expect.any(String),
       created_at: expect.any(String),
+      role: 'MEMBER',
     })
   })
 })
