@@ -9,14 +9,18 @@ export async function refresh(req: FastifyRequest, res: FastifyReply) {
   }
 
   const token = await res.jwtSign(
-    {},
+    {
+      role: req.user.role,
+    },
     {
       sub: req.user.sub,
     },
   )
 
   const refreshToken = await res.jwtSign(
-    {},
+    {
+        role: req.user.role,
+    },
     {
       sub: req.user.sub,
       expiresIn: '7d',

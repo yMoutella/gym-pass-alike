@@ -16,14 +16,18 @@ export async function session(req: FastifyRequest, res: FastifyReply) {
     const { user } = await authUseCase.execute({ email, password })
 
     const token = await res.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sub: user.id,
       },
     )
 
     const refreshToken = await res.jwtSign(
-      {},
+      {
+        role: user.role,
+      },
       {
         sub: user.id,
         expiresIn: '7d',
