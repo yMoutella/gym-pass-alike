@@ -1,11 +1,20 @@
 name: Run E2E tests
 
-on: [push]
+on: [pull_request]
 
 jobs:
   run-e2e-tests:
     name: Run E2E tests
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        ports:
+          - '5432:5432'
+        env:
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: apisolid
 
     steps:
       - uses: actions/checkout@v4
@@ -15,4 +24,7 @@ jobs:
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
       - run: yarn test:e2e
-
+        env:
+          DATABASE_URL: "postgres://postgres:admin@localhost:5432/apisolid"
+          JWT_SECRET: testing
+          NODE_ENV: 'test'
