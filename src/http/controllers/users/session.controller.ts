@@ -18,6 +18,9 @@ export async function session(req: FastifyRequest, res: FastifyReply) {
     const token = await res.jwtSign(
       {
         role: user.role,
+        name: user.name,
+        email: user.email,
+        plan: user.plan
       },
       {
         sub: user.id,

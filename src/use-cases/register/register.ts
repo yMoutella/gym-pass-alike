@@ -1,13 +1,14 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { UserDuplicatedException } from '../errors/user-duplicated-exception'
 import { hash } from 'bcryptjs'
-import { User } from '@prisma/client'
+import { Plan, User } from '@prisma/client'
 
 interface RegisterUseCaseInterface {
   name: string
   email: string
   password: string
   role: 'ADMIN' | 'MEMBER'
+  plan: Plan
 }
 
 interface RegisterUseCaseResponse {
@@ -21,6 +22,7 @@ export class RegisterUseCase {
     email,
     password,
     role,
+    plan,
   }: RegisterUseCaseInterface): Promise<RegisterUseCaseResponse> {
     const userWithSameEmail = await this.repository.findByEmail(email)
 
@@ -35,6 +37,7 @@ export class RegisterUseCase {
       email,
       password_hash,
       role,
+      plan,
     })
 
     return {

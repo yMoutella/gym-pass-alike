@@ -9,13 +9,22 @@ export async function register(req: FastifyRequest, res: FastifyReply) {
     email: z.string(),
     password: z.string().min(6),
     role: z.enum(['ADMIN', 'MEMBER']).default('MEMBER'),
+    plan: z.enum(['FREE', 'T1', 'T2', 'T3']).default('FREE'),
   })
 
-  const { name, email, password, role } = createClientSchema.parse(req.body)
+  const { name, email, password, role, plan } = createClientSchema.parse(
+    req.body,
+  )
 
   try {
     const regUseCase = makeRegisterUseCase()
-    const createdUser = await regUseCase.create({ name, email, password, role })
+    const createdUser = await regUseCase.create({
+      name,
+      email,
+      password,
+      role,
+      plan,
+    })
     return res.status(201).send(createdUser)
   } catch (error) {
     if (error instanceof UserDuplicatedException) {
